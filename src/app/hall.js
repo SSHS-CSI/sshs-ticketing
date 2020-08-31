@@ -2,18 +2,44 @@ import React from "react";
 
 import { Button } from "@blueprintjs/core";
 
-function Seat({ column = 0, row = 0, disabled = false, taken = false }) {
+function Seat({ column = 0, row = 0, state="none", onClick }) {
     let title = `${String.fromCharCode(column + 65)}${row}`;
+    let disabled, icon, text, intent;
+    switch (state) {
+    case "disabled":
+        disabled = true;
+        icon = "cross";
+        text = undefined;
+        intent = "none";
+        break;
+    case "taken":
+        disabled = true;
+        icon = "cross";
+        text = undefined;
+        intent = "primary";
+        break;
+    case "selected":
+        disabled = false;
+        icon = "tick";
+        text = undefined;
+        intent = "success";
+        break;
+    case "none":
+        disabled = false;
+        icon = undefined;
+        text = title;
+        intent = "none";
+        break;
+    }
     return (
         <td>
             <Button
                 style={{ width: "100%" }}
-                disabled={disabled || taken}
-                outlined={!taken}
-                intent={taken ? "primary" : "none"}
-                icon={taken ? "cross" : undefined}
-                text={!taken ? title : undefined}
-                onClick={() => alert(title)} />
+                disabled={disabled}
+                intent={intent}
+                icon={icon}
+                text={text}
+                onClick={onClick} />
         </td>
     );
 }
@@ -28,8 +54,7 @@ export default function Hall() {
                             <Seat
                                 column={i}
                                 row={j}
-                                disabled={(i + j) % 2 == 0}
-                                taken={(i == 3 && j == 2)}
+                                state={(i + j) % 2 == 0 ? "disabled" : (i == 3 & j == 2) ? "taken" : (i == 4 && j == 1) ? "selected" : "none"}
                             />
                         ))}
                         <td style={{ width: 8 }} />
