@@ -1,0 +1,23 @@
+{
+    "name": "sshs-ticketing",
+    "scripts": {
+        "start": "parcel src/index.html",
+        "build": "parcel build src/index.html",
+        "watch": "parcel watch src/index.html",
+        "clean": "rm -rf .cache dist"
+    },
+    "version": "0.0.1",
+    "description": "SSHS ticketing web app",
+    "main": "src/index.html",
+    "repository": "https://github.com/SSHS-CSI/sshs-ticketing",
+    "author": "Sungbin Jo <pcr910303@icloud.com>",
+    "license": "MIT",
+    "dependencies": {
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1"
+    },
+    "devDependencies": {
+        "@types/react": "^16.9.48",
+        "@types/react-dom": "^16.9.8"
+    }
+}
