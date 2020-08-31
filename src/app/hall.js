@@ -45,39 +45,29 @@ function Seat({ column = 0, row = 0, state="none", onClick }) {
 }
 
 export default function Hall() {
-    let [seatStates, setSeatStates] = useState(
-        Array.from(new Array(10).keys())
-            .map(row => Array.from(new Array(24).keys())
-                 .map(column => {
-                     if ((row + column) % 2 == 0) {
-                         return "disabled";
-                     } else {
-                         return "none";
-                     }
-                 }))
-    );
-    function toggleSeatState(row, column) {
-        setSeatStates(seatStates => {
-            let state = seatStates[row][column];
-            if (state == "disabled" || state == "taken") {
-                return seatStates;
-            }
-            let newState;
-            switch (state) {
-            case "selected":
-                newState = "none";
-                break;
-            case "none":
-                newState = "selected";
-                break;
-            }
-            return [
-                ...seatStates.slice(0, row),
-                [...seatStates[row].slice(0, column), newState, ...seatStates[row].slice(column + 1)],
-                ...seatStates.slice(row + 1)
-            ];
-        });
+    let [selectedSeat, setSelectedSeat] = useState(null);
+
+    function toggleSeat(row, column) {
+        if (selectedSeat != null && selectedSeat.row == row && selectedSeat.column == column) {
+            setSelectedSeat(null);
+        } else {
+            setSelectedSeat({
+                row,
+                column
+            });
+        }
     }
+
+    function seatState(row, column) {
+        if ((row + column) % 2 == 0) {
+            return "disabled";
+        }
+        if (selectedSeat == null || selectedSeat.row != row || selectedSeat.column != column) {
+            return "none";
+        }
+        return "selected";
+    }
+
     return (
         <div style={{ overflowX: "auto" }}>
             <table style={{ margin: "16px auto" }}>
@@ -87,8 +77,8 @@ export default function Hall() {
                             <Seat
                                 column={column}
                                 row={row}
-                                state={seatStates[row][column]}
-                                onClick={() => toggleSeatState(row, column)}
+                                state={seatState(row, column)}
+                                onClick={() => toggleSeat(row, column)}
                             />
                         ))}
                         <td style={{ width: 8 }} />
@@ -96,8 +86,8 @@ export default function Hall() {
                             <Seat
                                 column={column}
                                 row={row}
-                                state={seatStates[row][column]}
-                                onClick={() => toggleSeatState(row, column)}
+                                state={seatState(row, column)}
+                                onClick={() => toggleSeat(row, column)}
                             />
                         ))}
                         <td style={{ width: 8 }} />
@@ -105,8 +95,8 @@ export default function Hall() {
                             <Seat
                                 column={column}
                                 row={row}
-                                state={seatStates[row][column]}
-                                onClick={() => toggleSeatState(row, column)}
+                                state={seatState(row, column)}
+                                onClick={() => toggleSeat(row, column)}
                             />
                         ))}
                     </tr>
