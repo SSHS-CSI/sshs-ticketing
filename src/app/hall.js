@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Button } from "@blueprintjs/core";
 
@@ -44,23 +44,16 @@ function Seat({ column = 0, row = 0, state="none", onClick }) {
     );
 }
 
-export default function Hall() {
-    let [selectedSeat, setSelectedSeat] = useState(null);
-
-    function toggleSeat(row, column) {
-        if (selectedSeat != null && selectedSeat.row == row && selectedSeat.column == column) {
-            setSelectedSeat(null);
-        } else {
-            setSelectedSeat({
-                row,
-                column
-            });
-        }
-    }
+export default function Hall({ selectedSeat, toggleSeat, takenSeats }) {
 
     function seatState(row, column) {
         if ((row + column) % 2 == 0) {
             return "disabled";
+        }
+        for (let takenSeat of takenSeats) {
+            if (takenSeat.row == row && takenSeat.column == column) {
+                return "taken";
+            }
         }
         if (selectedSeat == null || selectedSeat.row != row || selectedSeat.column != column) {
             return "none";

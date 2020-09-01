@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { FormGroup, ControlGroup, InputGroup, Button } from "@blueprintjs/core";
 
-export default function Reserve() {
+export default function Reserve({ selectedSeat, takeSeat }) {
     let [state, setState] = useState("none");
     let intent, loading, icon;
     switch (state) {
@@ -32,7 +32,10 @@ export default function Reserve() {
         setState(state => {
             switch (state) {
             case "none":
-                setTimeout(() => setState("succeeded"), 1000);
+                setTimeout(() => {
+                    takeSeat(selectedSeat.row, selectedSeat.column);
+                    setState("succeeded");
+                }, 1000);
                 return "loading";
             case "loading":
                 return "loading";
